@@ -1,6 +1,6 @@
 namespace SchoolHealthSystem.Repositories
 {
-    public interface IInventoryRepository : IGenericRepository<Models.MedicineInventory>
+    public interface IInventoryRepository
     {
 
     }

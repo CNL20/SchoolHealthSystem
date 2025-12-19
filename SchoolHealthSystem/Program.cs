@@ -5,13 +5,24 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SchoolHealthSystem.Data;
 using SchoolHealthSystem.Helpers;
+using SchoolHealthSystem.Mapping;
+using SchoolHealthSystem.Repositories;
 using SchoolHealthSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // --- 1. KHAI BÁO CÁC DỊCH VỤ (SERVICES) ---
 builder.Services.AddControllersWithViews();
+
+// Cấu hình AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+
+//-- Khai báo Repository --
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
 builder.Services.AddScoped<JwtTokenHelper>();
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt")
