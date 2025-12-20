@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SchoolHealthSystem.DTOs.HealthRecords;
 using SchoolHealthSystem.DTOs.Students;
 using SchoolHealthSystem.Models;
 
@@ -26,6 +27,18 @@ namespace SchoolHealthSystem.Mapping
             CreateMap<UpdateStudentRequest, Student>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
+            //HealthRecord
+            CreateMap<HealthRecord, HealthRecordResponse>()
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName))
+                .ForMember(dest => dest.NurseName, opt => opt.MapFrom(src => src.Nurse!.FullName));
+
+            CreateMap<CreateHealthRecordRequest, HealthRecord>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.NurseId, opt => opt.Ignore())
+                .ForMember(dest => dest.RecordDate, opt => opt.MapFrom(src => DateTime.UtcNow));
+
+            CreateMap<UpdateHealthRecordRequest, HealthRecord>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

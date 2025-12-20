@@ -3,7 +3,7 @@ namespace SchoolHealthSystem.Models
     public class HealthRecord
     {
         public Guid Id { get; set; }
-
+        public string Name { get; set; } = string.Empty;
         public Guid StudentId { get; set; }
         public Guid NurseId { get; set; }
 
