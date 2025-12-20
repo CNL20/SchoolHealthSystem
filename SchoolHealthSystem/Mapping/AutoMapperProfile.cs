@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SchoolHealthSystem.DTOs.HealthRecords;
+using SchoolHealthSystem.DTOs.Medications;
 using SchoolHealthSystem.DTOs.Students;
 using SchoolHealthSystem.Models;
 
@@ -38,6 +39,22 @@ namespace SchoolHealthSystem.Mapping
                 .ForMember(dest => dest.RecordDate, opt => opt.MapFrom(src => DateTime.UtcNow));
 
             CreateMap<UpdateHealthRecordRequest, HealthRecord>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            //MedicationRequest
+            CreateMap<MedicationRequest, MedicationResponse>()
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName))
+                .ForMember(dest => dest.RequestedByParentName, opt => opt.MapFrom(src => src.RequestedByParent!.FullName))
+                .ForMember(dest => dest.ApprovedByNurseName, opt => opt.MapFrom(src => src.ApprovedByNurse!.FullName));
+
+            CreateMap<CreateMedicationRequest, MedicationRequest>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.RequestedByParentId, opt => opt.Ignore())
+                .ForMember(dest => dest.ApprovedByNurseId, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => MedicationStatus.Pending))
+                .ForMember(dest => dest.RequestDate, opt => opt.MapFrom(src => DateTime.UtcNow));
+
+            CreateMap<UpdateMedicationRequest, MedicationRequest>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
