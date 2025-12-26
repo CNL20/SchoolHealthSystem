@@ -1,3 +1,5 @@
+using SchoolHealthSystem.DTOs.Medications;
+
 namespace SchoolHealthSystem.Services
 {
     public interface IMedicationService

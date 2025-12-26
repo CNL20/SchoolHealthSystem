@@ -20,10 +20,12 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IHealthRecordService, HealthRecordService>();
+builder.Services.AddScoped<IMedicationService, MedicationService>();
 
 //-- Khai báo Repository --
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IHealthRecordRepository, HealthRecordRepository>();
+builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
 
 builder.Services.AddScoped<JwtTokenHelper>();
 builder.Services.Configure<JwtSettings>(
