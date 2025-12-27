@@ -5,6 +5,7 @@ namespace SchoolHealthSystem.Models
         public Guid Id { get; set; }
 
         public Guid StudentId { get; set; }
+        public Guid AdministeredByNurseId { get; set; }
 
         public string VaccineName { get; set; } = string.Empty;
 
@@ -13,5 +14,6 @@ namespace SchoolHealthSystem.Models
         public string? Note { get; set; }
 
         public Student? Student { get; set; }
+        public User? AdministeredByNurse { get; set; }
     }
 }

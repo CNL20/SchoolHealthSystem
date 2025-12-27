@@ -2,6 +2,7 @@
 using SchoolHealthSystem.DTOs.HealthRecords;
 using SchoolHealthSystem.DTOs.Medications;
 using SchoolHealthSystem.DTOs.Students;
+using SchoolHealthSystem.DTOs.Vaccinations;
 using SchoolHealthSystem.Models;
 
 namespace SchoolHealthSystem.Mapping
@@ -55,6 +56,21 @@ namespace SchoolHealthSystem.Mapping
                 .ForMember(dest => dest.RequestDate, opt => opt.MapFrom(src => DateTime.UtcNow));
 
             CreateMap<UpdateMedicationRequest, MedicationRequest>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            // Vaccination
+            CreateMap<VaccinationRecord, VaccinationResponse>()
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName));
+
+            CreateMap<CreateVaccinationRequest, VaccinationRecord>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.VaccinationDate, opt => opt.MapFrom(src => src.VaccinationDate ?? DateTime.UtcNow));
+
+            CreateMap<VaccinationConsentRequest, VaccinationRecord>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.VaccinationDate, opt => opt.MapFrom(src => src.PreferredDate ?? DateTime.UtcNow));
+
+            CreateMap<UpdateVaccinationRequest, VaccinationRecord>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
