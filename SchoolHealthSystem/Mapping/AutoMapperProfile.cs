@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using SchoolHealthSystem.DTOs.HealthRecords;
+using SchoolHealthSystem.DTOs.Inventories;
+using SchoolHealthSystem.DTOs.Medications;
 using SchoolHealthSystem.DTOs.Students;
+using SchoolHealthSystem.DTOs.Vaccinations;
 using SchoolHealthSystem.Models;
 
 namespace SchoolHealthSystem.Mapping
@@ -38,6 +41,44 @@ namespace SchoolHealthSystem.Mapping
                 .ForMember(dest => dest.RecordDate, opt => opt.MapFrom(src => DateTime.UtcNow));
 
             CreateMap<UpdateHealthRecordRequest, HealthRecord>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            //MedicationRequest
+            CreateMap<MedicationRequest, MedicationResponse>()
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName))
+                .ForMember(dest => dest.RequestedByParentName, opt => opt.MapFrom(src => src.RequestedByParent!.FullName))
+                .ForMember(dest => dest.ApprovedByNurseName, opt => opt.MapFrom(src => src.ApprovedByNurse!.FullName));
+
+            CreateMap<CreateMedicationRequest, MedicationRequest>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.RequestedByParentId, opt => opt.Ignore())
+                .ForMember(dest => dest.ApprovedByNurseId, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => MedicationStatus.Pending))
+                .ForMember(dest => dest.RequestDate, opt => opt.MapFrom(src => DateTime.UtcNow));
+
+            CreateMap<UpdateMedicationRequest, MedicationRequest>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));            // Vaccination
+            CreateMap<VaccinationRecord, VaccinationResponse>()
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName))
+                .ForMember(dest => dest.AdministeredByNurseName, opt => opt.MapFrom(src => src.AdministeredByNurse!.FullName));
+
+            CreateMap<CreateVaccinationRequest, VaccinationRecord>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<UpdateVaccinationRequest, VaccinationRecord>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<CompleteVaccinationRequest, VaccinationRecord>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => VaccinationStatus.Completed));
+
+            // MedicineInventory
+            CreateMap<MedicineInventory, InventoryResponse>();
+
+            CreateMap<CreateInventoryRequest, MedicineInventory>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+
+            CreateMap<UpdateInventoryRequest, MedicineInventory>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
